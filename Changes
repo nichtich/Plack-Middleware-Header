@@ -1,5 +1,8 @@
 Revision history for Perl module Plack::Middleware::Headers
 
+0.11  Sat Mar 22 08:25 UTC 2014
+    - fixed bug #1 (Maurice Aubrey)
+
 0.10  Sat Sep 14 14:35 UTC 2013
     - fork renamed to Plack::Middleware::Headers
     - migrated to dzil
