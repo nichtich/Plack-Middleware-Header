@@ -31,11 +31,16 @@ while (my ($has, $want) = splice @tests, 0, 2) {
             enable 'Headers',
                 set  => ['Content-Type' => 'text/plain'],
                 when => $when;
-            sub { ['200', $has, []] };
+            sub { ['200', [ @$has ], []] };
         };
 
         my $env = HTTP::Request->new(GET => '/')->to_psgi;
         my $res = $app->($env);
+        is_deeply $res->[1], $want;
+
+        # Run each test twice to make sure we aren't depending on initial
+        # prepare_app() state.
+        $res = $app->($env);
         is_deeply $res->[1], $want;
     }
 }

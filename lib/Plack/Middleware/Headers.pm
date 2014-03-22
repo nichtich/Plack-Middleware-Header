@@ -19,8 +19,11 @@ sub prepare_app {
         $self->when( sub {
             my @headers = @_;
             my $match = 0;
-            while (my($key, $check) = splice @when, 0, 2) {
+            for (my $i = 0; $i < @when; $i += 2) {
+                my ($key, $check) = ($when[ $i ], $when[ $i + 1 ]);
+
                 my $value = Plack::Util::header_get(\@headers, $key);
+
                 if (!defined $check) {            # missing header check
                     next if defined $value;     
                 } elsif( !defined $value ) {      # header missing
@@ -30,6 +33,7 @@ sub prepare_app {
                 } elsif ( $value ne $check ) {    # exact header
                     next;
                 }
+
                 return 1; 
             }
             return;
